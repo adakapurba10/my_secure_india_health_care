@@ -1,0 +1,56 @@
+import 'package:flutter/material.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+class BiometricScreen extends StatefulWidget {
+  @override
+  _BiometricScreenState createState() => _BiometricScreenState();
+}
+
+class _BiometricScreenState extends State<BiometricScreen> {
+  final LocalAuthentication auth = LocalAuthentication();
+  bool _canCheckBiometrics = false;
+  bool _authenticated = false;
+
+  @override
+  void initState() {
+    super.initState();
+    checkBiometrics();
+  }
+
+  Future<void> checkBiometrics() async {
+    _canCheckBiometrics = await auth.canCheckBiometrics;
+    setState(() {});
+  }
+
+  Future<void> authenticate() async {
+    bool authenticated = false;
+    try {
+      authenticated = await auth.authenticate(
+        localizedReason: 'Scan your fingerprint to authenticate',
+        biometricOnly: true,
+      );
+      if (authenticated) {
+        Fluttertoast.showToast(msg: 'Biometric Authentication Successful!');
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Authentication Failed');
+    }
+    setState(() {
+      _authenticated = authenticated;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Biometric Login")),
+      body: Center(
+        child: _authenticated
+            ? Text("Logged in via Biometrics")
+            : ElevatedButton(
+                onPressed: authenticate, child: Text("Login via Fingerprint")),
+      ),
+    );
+  }
+}

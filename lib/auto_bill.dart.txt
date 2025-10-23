@@ -1,0 +1,50 @@
+import 'package:flutter/material.dart';
+
+class AutoBillScreen extends StatelessWidget {
+  final Map<String, dynamic> order;
+  AutoBillScreen({required this.order});
+
+  double get total {
+    return order['items'].fold(
+        0, (sum, item) => sum + (item['price'] ?? 0) * (item['qty'] ?? 1));
+  }
+
+  void generateInvoice(BuildContext context) {
+    // Placeholder for generating invoice PDF or saving to ledger
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text("Invoice generated!")));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Bill for ${order['customer']}")),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                  itemCount: order['items'].length,
+                  itemBuilder: (context, index) {
+                    final item = order['items'][index];
+                    return ListTile(
+                      title: Text(item['name']),
+                      subtitle: Text('Qty: ${item['qty']}'),
+                      trailing: Text('₹${item['qty'] * item['price']}'),
+                    );
+                  }),
+            ),
+            Divider(),
+            Text("Total: ₹$total",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            SizedBox(height: 20),
+            ElevatedButton(
+                onPressed: () => generateInvoice(context),
+                child: Text("Generate Invoice"))
+          ],
+        ),
+      ),
+    );
+  }
+}
