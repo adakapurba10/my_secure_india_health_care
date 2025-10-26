@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'firestore_service.dart';
+import 'service/firestore_service.dart';
+import 'auto_bill.dart';
 
 class OrderBookScreen extends StatelessWidget {
   const OrderBookScreen({super.key});
@@ -41,8 +42,6 @@ class OrderBookScreen extends StatelessWidget {
     );
   }
 }
-import 'package:flutter/material.dart';
-import 'auto_bill.dart';
 
 class OrderListScreen extends StatefulWidget {
   @override

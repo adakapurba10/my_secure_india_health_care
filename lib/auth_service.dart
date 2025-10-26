@@ -1,21 +1,17 @@
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
-  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<void> signInWithGoogle() async {
+  Future<User?> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return; // User cancelled
-
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-
-      final idToken = googleAuth.idToken; // accessToken deprecated
-
-      print('Google ID Token: $idToken');
-    } catch (e) {
-      print('Google Sign-In Error: $e');
+      final UserCredential uc = await _auth.signInAnonymously();
+      return uc.user;
+    } catch (_) {
+      return null;
     }
   }
+
+  Future<bool> canAuthenticateBiometric() async => false;
+  Future<bool> authenticateBiometric() async => true;
 }
