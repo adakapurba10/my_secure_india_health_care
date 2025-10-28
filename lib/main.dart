@@ -15,9 +15,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Firebase Connected App',
+      routes: {
+        '/customer': (_) => const CustomerDashboard(),
+        '/retailer': (_) => const RetailerDashboard(),
+        '/wholesaler': (_) => const WholesalerDashboard(),
+      },
       home: Scaffold(
-        appBar: AppBar(title: Text('Home')),
-        body: Center(child: Text('Firebase Initialized')),
+        appBar: AppBar(title: const Text('Home')),
+        body: const Center(child: Text('Firebase Initialized')),
       ),
     );
   }
