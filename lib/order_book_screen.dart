@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'firestore_service.dart';
+import 'service/firestore_service.dart';
 
 class OrderBookScreen extends StatelessWidget {
   const OrderBookScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final firestoreService = Provider.of<FirestoreService>(context);
+    final firestoreService = FirestoreService();
     return Scaffold(
       appBar: AppBar(title: const Text('Order Book')),
       body: FutureBuilder<List<Map<String, dynamic>>>(
